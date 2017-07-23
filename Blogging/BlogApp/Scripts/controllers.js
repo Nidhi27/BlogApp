@@ -1,5 +1,5 @@
 ﻿angular.module('app.controllers', ['app.services', 'angularUtils.directives.dirPagination', 'app.directives','LocalStorageModule'])
-
+    
     .controller('LoginController', ['$scope',  '$http', '$window', 'authService', function ($scope, $http, $window, authService) {
         $scope.init = function () {
             $scope.isProcessing = false;
@@ -13,6 +13,8 @@
             password: ""
         }
 
+  
+
         $scope.Login = function () {
             $scope.isProcessing = true;
             $scope.LoginBtnText = "Signing in.....";
@@ -20,8 +22,9 @@
             authService.login($scope.loginData).then(function (response) {
                 alert("Login Successfully");
                 $window.location.href = "Index1.html";
-            }, function () {
+            }, function (err) {
                 alert("Failed.Please try again.");
+               
                 $scope.init();
             })
         }
@@ -95,6 +98,16 @@
             CategoryId: '',
             TagIds: [],
         };
+
+        $scope.filterByCategory = function (categoryId)
+        {
+            PostService.GetAllRecordsByCategory(categoryId).then(function (d) {
+                $scope.postData = d.data;
+                // Success
+            }, function () {
+                alert('Error Occured in category!!!'); // Failed
+            });
+        }
 
         //$scope.Category = {
         //    Id: '',

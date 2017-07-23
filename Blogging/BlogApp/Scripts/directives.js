@@ -6,6 +6,15 @@
             // priority: 1,
             // terminal: true,
             // scope: {}, // {} = isolate, true = child, false/undefined = no change
+            controller : ['$scope', '$http', '$window', 'authService', function($scope, $http, $window, authService) {
+                $scope.authenticated = authService.isAuth;
+
+                $scope.logOut = function () {
+                    authService.logOut();
+                    $window.location.href = "Index1.html";
+                };
+            }],
+
             //controller: ['$scope', '$http', function ($scope, $http) {
             //    $http.get('data/pages.json').success(function (data) {
             //        $scope.pages = data;

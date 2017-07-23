@@ -1,6 +1,10 @@
-﻿angular.module('app', ['ngRoute','app.controllers','app.services'])
+﻿angular.module('app', ['ngRoute', 'app.controllers', 'app.services'])
+    .config(function ($httpProvider) {
+        $httpProvider.interceptors.push('authInterceptorService');
+    })
     .config(['$routeProvider', function ($routeProvider) {
 
+    
         $routeProvider.when('/', {
             templateUrl: 'http://localhost:57649/BlogApp/Views/post.html',
             controller: 'PostController'

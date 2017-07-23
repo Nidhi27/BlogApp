@@ -3,8 +3,13 @@
     .factory('PostService', function ($http) {
         var fac = {};
         fac.GetAllRecords = function () {
-            return $http.get('http://localhost:57649/api/post');
+            return $http.get('/api/post/');
         }
+
+        fac.GetAllRecordsByCategory = function (categoryId) {
+            return $http.get('/api/post/?categoryId=' + categoryId);
+        }
+
         return fac;
     })
 
@@ -12,7 +17,7 @@
     .factory('CategoryService', function ($http) {
         var fac = {};
         fac.GetAllRecords = function () {
-            return $http.get('http://localhost:57649/api/category/');
+            return $http.get('/api/category/');
         }
         return fac;
     })
@@ -20,7 +25,7 @@
     .factory('TagService', function ($http) {
         var fac = {};
         fac.GetAllRecords = function () {
-            return $http.get('http://localhost:57649/api/tag/');
+            return $http.get('/api/tag/');
         }
         return fac;
     })
@@ -54,6 +59,7 @@
 
         authInterceptorServiceFactory.responseError = function (rejection) {
             if (rejection.status === 401) {
+
                 var authService = $injector.get('authService');
                 var authData = localStorageService.get('authorizationData');
                 //authService.logOut();
@@ -77,7 +83,7 @@
 
         authServiceFactory.saveRegistration = function (registration) {
 
-            //authServiceFactory.logOut();
+           authServiceFactory.logOut();
 
             return $http.post('/api/account/register', registration)
         };
@@ -91,14 +97,14 @@
             $http.post('/token', data, {
                 header: { 'Content-Type': 'application/x-www-form-urlencoded' }
             }).then(function (response) {
-                localStorageService.set('authorizationData', { token: response.access_token, userName: response.userName });
+                localStorageService.set('authorizationData', { token: response.data.access_token, userName: response.data.userName });
 
                 _authentication.isAuth = true;
                 _authentication.userName = loginData.userName;
 
                 deferred.resolve(response);
                 }).then(function (err) {
-                //_logOut();
+                _logOut();
                 deferred.reject(err);
             });
 

@@ -48,7 +48,7 @@
                         Categories:
                         <div data-ng-model="Category.Id">
                             <ul ng-repeat="cats in categoryData">
-                                <li><a href="#!/post/CategoryId/{{categoryData.indexOf(cats)}}"> {{cats.Name}}</a> </li>
+                                <li><a ng-click="filterByCategory(cats.Id)"> {{cats.Name}}</a> </li>
                             </ul>
                         </div>
 

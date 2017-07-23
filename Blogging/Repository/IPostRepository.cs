@@ -9,6 +9,8 @@ namespace Blogging.Repository
 {
     interface IPostRepository
     {
+        IEnumerable<Post> GetAll(string userId);
+        IEnumerable<Post> GetAllByCategoryId(int categoryId);
         IEnumerable<Post> GetAll();
         Post Get(int id);
         IEnumerable<Post> GetPostCategory(int id);

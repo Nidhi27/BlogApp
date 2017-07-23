@@ -11,6 +11,18 @@ namespace Blogging.Repository
         ApplicationDbContext db = new ApplicationDbContext();
 
 
+        public IEnumerable<Post> GetAll(string userId)
+        {
+            // TO DO : Code to get the list of all the records in database
+
+            return db.Posts.Where(p=> p.UserId == userId);
+        }
+
+        public IEnumerable<Post> GetAllByCategoryId(int categoryId)
+        {
+            return db.Posts.Where(p => p.CategoryId == categoryId);
+        }
+
         public IEnumerable<Post> GetAll()
         {
             // TO DO : Code to get the list of all the records in database
