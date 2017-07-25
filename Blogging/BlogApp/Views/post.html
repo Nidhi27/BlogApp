@@ -12,7 +12,6 @@
                 </ul>
             </div>
         </nav>-->
-
         <form class="form-inline">
             <div class="form-group">
               
@@ -25,11 +24,16 @@
                 <div style="overflow:hidden;width:80%;">
                     <div dir-paginate="posts in postData|orderBy: '-PostedOn' | filter: search|itemsPerPage:5" class="postDescContainer">
                         <div class="postDescTitle"><h3><a href="#!/post/{{postData.indexOf(posts)}}">{{posts.Title}}</a></h3></div>
+                        
                         <div class="postPubDate">
-                            <label>Posted On :</label> {{posts.PostedOn | date:'dd/MM/yyyy'}}
+                          
+                            
                         </div>
                         <div class="postDescCategory" ng-model="Category">
-                            <label>Category:&nbsp;</label> {{posts.Category.Name}}
+                            <div ng-model="ApplicationUser">
+                                Posted By: <b> {{posts.ApplicationUser.UserName}}</b> in
+                                <b> {{posts.Category.Name}} </b> on <b> {{posts.PostedOn | date:'dd/MM/yyyy'}}</b>
+                            </div>
                         </div>
                         <div class="postDescBody" ng-model="postLimit">
                             {{posts.Content | limitTo : postLimit}}  <a href="#!/post/{{postData.indexOf(posts)}}">  Read More..</a>

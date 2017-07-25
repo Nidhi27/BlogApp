@@ -64,10 +64,21 @@ namespace Blogging.Repository
             }
 
             // TO DO : Code to save record into database
+            Post p = new Post();
+            p.Title = post.Title;
+            p.Content = post.Content;
+            p.PostedOn = post.PostedOn;
+            p.UserId = post.UserId;
+            p.CategoryId = post.CategoryId;
+          
+            p.TagIds = post.TagIds;
+         
+
+          var ol=   db.Posts.Add(p);
            
-          var ol=   db.Posts.Add(post);
            // db.PostTagMappings
             db.SaveChanges();
+            
             return post;
         }
         public bool Update(Post post)

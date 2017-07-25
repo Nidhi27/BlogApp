@@ -25,6 +25,7 @@ namespace Blogging.Models
         [ForeignKey("UserId")]
         public virtual ApplicationUser ApplicationUser { get; set; }
 
+        [NotMapped]
         public IList<int> TagIds { get; set; }
 
         [ForeignKey("TagIds")]

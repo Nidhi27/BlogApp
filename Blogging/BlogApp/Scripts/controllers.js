@@ -97,6 +97,7 @@
             PostedOn: new Date(),
             CategoryId: '',
             TagIds: [],
+           
         };
 
         $scope.filterByCategory = function (categoryId)
@@ -128,8 +129,12 @@
         $scope.save = function () {
             if ($scope.Post.Title != "") {
                 $scope.Post.CategoryId = $scope.Category.Id;
-                $scope.Post.TagIds.push($scope.Tag.Id);
-
+                for (var i = 0; i < $scope.Tag.Id.length; i++)
+                {
+                    $scope.Post.TagIds.push($scope.Tag.Id[i]);
+                }
+                
+               
 
                 // Call Http request using $.ajax
 
