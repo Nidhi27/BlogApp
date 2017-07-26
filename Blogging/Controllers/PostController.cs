@@ -54,12 +54,17 @@ namespace Blogging.Controllers
 
             //var bghg = db.Users.FirstOrDefault(x => x.UserName == sdsd);
             //  post.UserId = bghg.Id;
+
+         
             post.UserId = User.Identity.GetUserId();
+            db.SaveChanges();
             return repository.Add(post);
+
+           
         }
 
 
-
+        [Authorize(Roles = "Admin")]
         public IEnumerable PutPost(int id, Post post)
         {
             post.Id = id;

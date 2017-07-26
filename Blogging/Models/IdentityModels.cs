@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -41,6 +42,6 @@ namespace Blogging.Models
         public System.Data.Entity.DbSet<Blogging.Models.Tag> Tags { get; set; }
         public System.Data.Entity.DbSet<Blogging.Models.Post> Posts { get; set; }
         public System.Data.Entity.DbSet<Blogging.Models.PostTagMapping> PostTagMappings { get; set; }
-       
+        
     }
 }

@@ -590,3 +590,4 @@ C:\Users\nidhigoyal\Desktop\BlogApp\Blogging\obj\Debug\Blogging.Migrations.New.r
 C:\Users\nidhigoyal\Desktop\BlogApp\Blogging\obj\Debug\Blogging.csproj.GenerateResource.Cache
 C:\Users\nidhigoyal\Desktop\BlogApp\Blogging\obj\Debug\Blogging.dll
 C:\Users\nidhigoyal\Desktop\BlogApp\Blogging\obj\Debug\Blogging.pdb
+C:\Users\nidhigoyal\Desktop\BlogApp\Blogging\obj\Debug\Blogging.Migrations.New1.resources

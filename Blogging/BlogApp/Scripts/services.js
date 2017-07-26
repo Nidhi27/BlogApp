@@ -3,7 +3,7 @@
     .factory('PostService', function ($http) {
         var fac = {};
         fac.GetAllRecords = function () {
-            return $http.get('/api/post/');
+            return $http.get('/api/post');
         }
 
         fac.GetAllRecordsByCategory = function (categoryId) {

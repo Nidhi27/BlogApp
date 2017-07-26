@@ -23,10 +23,26 @@ namespace Blogging.Repository
             return db.Posts.Where(p => p.CategoryId == categoryId);
         }
 
+        //public IEnumerable<Post> GetAllByTagIds(int tagId)
+        //{
+        //    return db.Posts.Where(p => p.TagIds == tagId);
+        //}
+
         public IEnumerable<Post> GetAll()
         {
             // TO DO : Code to get the list of all the records in database
-
+            var data = db.Posts.Select(x => new
+            {
+                Id = x.Id,
+                Title = x.Title,
+                Content = x.Content,
+                UserName = db.Users.Where(y => y.Id == x.UserId).Select(y => y.UserName).FirstOrDefault(),
+                CategoryId = x.CategoryId,
+                TagIds = x.Tags.Select(m => new { Id = m.Id, Name = m.Name }).ToList(),
+                TagName = x.Tags.Select(m => new { Id = m.Id, Name = m.Name}).ToList(),
+                PostedOn = x.PostedOn,
+                
+            });
             return db.Posts;
         }
 
@@ -56,6 +72,9 @@ namespace Blogging.Repository
         //    return item;
         //}
 
+         
+
+
         public Post Add(Post post)
         {
             if (post == null)
@@ -65,21 +84,28 @@ namespace Blogging.Repository
 
             // TO DO : Code to save record into database
             Post p = new Post();
+            PostTagMapping postTagMapping = new PostTagMapping();
             p.Title = post.Title;
             p.Content = post.Content;
             p.PostedOn = post.PostedOn;
             p.UserId = post.UserId;
             p.CategoryId = post.CategoryId;
-          
-            p.TagIds = post.TagIds;
-         
-
-          var ol=   db.Posts.Add(p);
            
-           // db.PostTagMappings
-            db.SaveChanges();
+            db.Posts.Add(p);
+           
+
+
+            for (int i = 0; i < post.TagIds.Count; i++)
+            {
             
+                postTagMapping.PostId = post.Id;
+                postTagMapping.TagId = post.TagIds[i];
+                db.PostTagMappings.Add(postTagMapping);
+             };
+
+            db.SaveChanges();
             return post;
+
         }
         public bool Update(Post post)
         {

@@ -14,7 +14,6 @@
         }
 
   
-
         $scope.Login = function () {
             $scope.isProcessing = true;
             $scope.LoginBtnText = "Signing in.....";
@@ -49,7 +48,7 @@
             $scope.RegisterBtnText = "Please wait...";
             RegistrationService.saveRegistration($scope.registration).then(function (response) {
                 alert("Registration Successfully Completed. Please sign in to Continue.");
-                $window.location.href = "login.html";
+                $window.location.href = "Index1.html";
             }, function () {
                 alert("Error occured. Please try again.");
                 $scope.isProcessing = false;

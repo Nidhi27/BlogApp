@@ -11,6 +11,7 @@ namespace Blogging.Repository
     {
         IEnumerable<Post> GetAll(string userId);
         IEnumerable<Post> GetAllByCategoryId(int categoryId);
+        //IEnumerable<Post> GetAllByTagIds(int tagId);
         IEnumerable<Post> GetAll();
         Post Get(int id);
         IEnumerable<Post> GetPostCategory(int id);

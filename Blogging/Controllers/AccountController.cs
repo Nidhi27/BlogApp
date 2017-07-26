@@ -336,8 +336,18 @@ namespace Blogging.Controllers
             {
                 return GetErrorResult(result);
             }
+            else
+            {
+                var currentUser = UserManager.FindByName(user.UserName);
 
-            return Ok();
+                var roleResult = UserManager.AddToRole(currentUser.Id, "User");
+
+                
+                  return Ok();
+                    
+            }
+
+          
         }
 
         // POST api/Account/RegisterExternal
