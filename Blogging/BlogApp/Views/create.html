@@ -27,7 +27,11 @@
             </select>
 
         </div>
-
+        <div>
+            <label>Tag</label>
+            <select multiple ng-model="selectedtags" class="form-control"
+                    ng-options="item.Name for item in tagData" required></select>
+        </div>
         <br />
         <div>
             <button data-ng-click="save()">Save</button>

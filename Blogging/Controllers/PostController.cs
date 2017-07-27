@@ -22,16 +22,17 @@ namespace Blogging.Controllers
 
         // api/Get
         [AllowAnonymous]
-        public IEnumerable GetAllPost([FromUri] int categoryId = 0)
+        
+        public IQueryable GetAllPost(int categoryId=0)
         {
-             if(categoryId > 0)
+            if (categoryId > 0)
             {
-                return repository.GetAllByCategoryId(categoryId).ToList();
+                return repository.GetAllByCategoryId(categoryId);
             }
             else
             {
-                return repository.GetAll().ToList();
-            }            
+                return repository.GetAll();
+            }
         }
 
         // api/Get        
@@ -42,11 +43,11 @@ namespace Blogging.Controllers
             return repository.GetAll(userId).ToList();
         }
 
-        [Route("GetPostCategory")]
-        public IEnumerable GetPostCategory(int id)
-        {
-            return repository.GetPostCategory(id).ToList();
-        }
+        //[Route("GetPostCategory")]
+        //public IEnumerable GetPostCategory(int id)
+        //{
+        //    return repository.GetPostCategory(id).ToList();
+        //}
 
         public Post PostPosts(Post post)
         {
@@ -57,7 +58,7 @@ namespace Blogging.Controllers
 
          
             post.UserId = User.Identity.GetUserId();
-            db.SaveChanges();
+           // db.SaveChanges();
             return repository.Add(post);
 
            
@@ -77,7 +78,8 @@ namespace Blogging.Controllers
                 return null;
             }
         }
-
+        
+        [Authorize(Roles ="Admin")]
         public bool DeletePost(int id)
         {
             if (repository.Delete(id))

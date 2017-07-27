@@ -75,19 +75,24 @@
             alert('Error Occured in category!!!'); // Failed
         });
 
+       
+     
+
         TagService.GetAllRecords().then(function (d) {
             $scope.tagData = d.data;
+            
+            
         }, function () {
             alert('Error Occured in Tag!!!');
         });
-
+        
         $scope.postLimit = 300;
 
         $scope.sortPost = function () {
             var date = new Date($scope.PostedOn);
             return date;
         };
-
+        $scope.selectedtags = [];
         $scope.Post = {
             Id: '',
             Title: '',
@@ -95,8 +100,8 @@
             Content: '',
             PostedOn: new Date(),
             CategoryId: '',
-            TagIds: [],
-           
+            //TagIds: [],
+            Tags:''
         };
 
         $scope.filterByCategory = function (categoryId)
@@ -109,6 +114,7 @@
             });
         }
 
+      
         //$scope.Category = {
         //    Id: '',
         //    Name: ''
@@ -128,12 +134,12 @@
         $scope.save = function () {
             if ($scope.Post.Title != "") {
                 $scope.Post.CategoryId = $scope.Category.Id;
-                for (var i = 0; i < $scope.Tag.Id.length; i++)
-                {
-                    $scope.Post.TagIds.push($scope.Tag.Id[i]);
-                }
-                
-               
+                //for (var i = 0; i < $scope.Tag.Id.length; i++)
+                //{
+                //    $scope.Post.TagIds.push($scope.Tag.Id[i]);
+                //}
+
+                $scope.Post.Tags = $scope.selectedtags;
 
                 // Call Http request using $.ajax
 
@@ -155,6 +161,7 @@
                 // or you can call Http request using $http
                 $http({
                     method: 'POST',
+                    //contentType: 'application/json; charset=utf-8',
                     url: 'http://localhost:57649/api/post/PostPosts/',
                     data: $scope.Post
                 }).then(function successCallback(response) {

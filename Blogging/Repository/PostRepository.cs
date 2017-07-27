@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Blogging.Models;
+using System.Data.Entity;
 
 namespace Blogging.Repository
 {
@@ -18,32 +19,62 @@ namespace Blogging.Repository
             return db.Posts.Where(p=> p.UserId == userId);
         }
 
-        public IEnumerable<Post> GetAllByCategoryId(int categoryId)
+        public IQueryable GetAllByCategoryId(int categoryId)
         {
-            return db.Posts.Where(p => p.CategoryId == categoryId);
+            var data = db.Posts.Where(p => p.CategoryId == categoryId)
+                .Select( x => new
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    CategoryId = x.CategoryId,
+
+                    UserName = db.Users.Where(y => y.Id == x.UserId)
+                    .Select(y => y.UserName)
+                    .FirstOrDefault(),
+                    CategoryName = db.Categories.Where(c => c.Id == x.CategoryId)
+                                    .Select(y => y.Name)
+                                    .FirstOrDefault(),
+                    TagName = x.Tags.Select(m => new { Id = m.Id, Name = m.Name }).ToList(),
+                    Tags = x.Tags.Select(m => new { Id = m.Id, Name = m.Name }).ToList(),
+                    PostedOn = x.PostedOn,
+                    Content = x.Content,
+                });
+
+            return data;
         }
+
+        //public IQueryable GetAllByTagId(int tagId)
+        //{
+        //    var data = db.Posts.Where(p => p. == tagId)
+        //}
 
         //public IEnumerable<Post> GetAllByTagIds(int tagId)
         //{
         //    return db.Posts.Where(p => p.TagIds == tagId);
         //}
 
-        public IEnumerable<Post> GetAll()
+        public IQueryable GetAll()
         {
             // TO DO : Code to get the list of all the records in database
-            var data = db.Posts.Select(x => new
-            {
-                Id = x.Id,
-                Title = x.Title,
-                Content = x.Content,
-                UserName = db.Users.Where(y => y.Id == x.UserId).Select(y => y.UserName).FirstOrDefault(),
-                CategoryId = x.CategoryId,
-                TagIds = x.Tags.Select(m => new { Id = m.Id, Name = m.Name }).ToList(),
-                TagName = x.Tags.Select(m => new { Id = m.Id, Name = m.Name}).ToList(),
-                PostedOn = x.PostedOn,
-                
-            });
-            return db.Posts;
+            var data = db.Posts
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    CategoryId = x.CategoryId,
+
+                    UserName = db.Users.Where(y => y.Id == x.UserId)
+                    .Select(y => y.UserName)
+                    .FirstOrDefault(),
+                    CategoryName = db.Categories.Where(c => c.Id == x.CategoryId)
+                                    .Select(y => y.Name)
+                                    .FirstOrDefault(),
+                    TagName = x.Tags.Select(m => new { Id = m.Id, Name = m.Name }).ToList(),
+                     Tags = x.Tags.Select(m => new { Id = m.Id, Name = m.Name }).ToList(),
+                     PostedOn = x.PostedOn,
+                     Content = x.Content,
+                 });
+            return data;
         }
 
         public Post Get(int id)
@@ -52,12 +83,12 @@ namespace Blogging.Repository
             return db.Posts.Find(id);
         }
 
-        public IEnumerable<Post> GetPostCategory(int id)
-        {
-            var posts = db.Posts.Where(p => p.CategoryId == id).ToList();
+        //public IQueryable GetPostCategory(int id)
+        //{
+        //    var posts = db.Posts.Where(p => p.CategoryId == id);
 
-            return posts;
-        }
+        //    return posts;
+        //}
 
         //public Employee Add(Employee item)
         //{
@@ -72,7 +103,7 @@ namespace Blogging.Repository
         //    return item;
         //}
 
-         
+
 
 
         public Post Add(Post post)
@@ -90,20 +121,29 @@ namespace Blogging.Repository
             p.PostedOn = post.PostedOn;
             p.UserId = post.UserId;
             p.CategoryId = post.CategoryId;
-           
-            db.Posts.Add(p);
-           
-
-
-            for (int i = 0; i < post.TagIds.Count; i++)
+            p.Tags = post.Tags;
+            p.TagIds = post.TagIds;
+            foreach (var assignedtag in post.Tags)
             {
-            
-                postTagMapping.PostId = post.Id;
-                postTagMapping.TagId = post.TagIds[i];
-                db.PostTagMappings.Add(postTagMapping);
-             };
+                db.Entry(assignedtag).State = EntityState.Unchanged;
+            }
 
+            p.Tags = post.Tags;
+            db.Posts.Add(p);
             db.SaveChanges();
+            //db.Posts.Add(p);
+            //db.SaveChanges();
+
+            
+            //for (int i = 0; i < post.TagIds.Count; i++)
+            //{
+
+            //    postTagMapping.PostId = post.Id;
+            //    postTagMapping.TagId = post.TagIds[i];
+            //    db.PostTagMappings.Add(postTagMapping);
+            // }
+
+           
             return post;
 
         }

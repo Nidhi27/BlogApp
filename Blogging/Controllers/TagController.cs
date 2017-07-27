@@ -16,10 +16,11 @@ namespace Blogging.Controllers
 
         ApplicationDbContext db = new ApplicationDbContext();
         // api/Get
-        public IEnumerable GetAllTag()
+        [Route("api/tag/")]
+        public IQueryable GetAllTag()
         {
 
-            return repository.GetAll().ToList();
+            return repository.GetAll();
         }
 
         public Tag PostTags(Tag tag)

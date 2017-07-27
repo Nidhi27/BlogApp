@@ -3,11 +3,11 @@
     .factory('PostService', function ($http) {
         var fac = {};
         fac.GetAllRecords = function () {
-            return $http.get('/api/post');
+            return $http.get('http://localhost:57649/api/post/');
         }
 
         fac.GetAllRecordsByCategory = function (categoryId) {
-            return $http.get('/api/post/?categoryId=' + categoryId);
+            return $http.get('http://localhost:57649/api/post/?categoryId=' + categoryId);
         }
 
         return fac;
@@ -17,7 +17,7 @@
     .factory('CategoryService', function ($http) {
         var fac = {};
         fac.GetAllRecords = function () {
-            return $http.get('/api/category/');
+            return $http.get('http://localhost:57649/api/category/');
         }
         return fac;
     })
@@ -25,7 +25,7 @@
     .factory('TagService', function ($http) {
         var fac = {};
         fac.GetAllRecords = function () {
-            return $http.get('/api/tag/');
+            return $http.get('http://localhost:57649/api/tag/');
         }
         return fac;
     })

@@ -9,7 +9,7 @@ namespace Blogging.Repository
 {
     interface ITagRepository
     {
-        IEnumerable<Tag> GetAll();
+        IQueryable GetAll();
         Tag Get(int id);
         Tag Add(Tag tag);
         bool Update(Tag tag);

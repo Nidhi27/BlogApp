@@ -10,12 +10,13 @@ namespace Blogging.Repository
     {
         ApplicationDbContext db = new ApplicationDbContext();
 
-
-        public IEnumerable<Tag> GetAll()
+        
+        public IQueryable GetAll()
         {
             // TO DO : Code to get the list of all the records in database
 
-            return db.Tags;
+            var data = db.Tags.Select(m => new { Id = m.Id, Name = m.Name });
+            return data;
         }
 
         public Tag Get(int id)

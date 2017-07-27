@@ -10,11 +10,11 @@ namespace Blogging.Repository
     interface IPostRepository
     {
         IEnumerable<Post> GetAll(string userId);
-        IEnumerable<Post> GetAllByCategoryId(int categoryId);
+        IQueryable GetAllByCategoryId(int categoryId);
         //IEnumerable<Post> GetAllByTagIds(int tagId);
-        IEnumerable<Post> GetAll();
+        IQueryable GetAll();
         Post Get(int id);
-        IEnumerable<Post> GetPostCategory(int id);
+       
         Post Add(Post post);
         bool Update(Post post);
         bool Delete(int id);
