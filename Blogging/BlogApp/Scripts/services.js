@@ -74,36 +74,50 @@
 
 
     .factory('authService', ['$http', '$q', 'localStorageService', function ($http, $q, localStorageService) {
+
+        var serviceBase = '/';
+
         var authServiceFactory = {};
 
         var _authentication = {
             isAuth: false,
-            userName: ""
+            userName: "",
+            isAdmin: false
         };
 
-        authServiceFactory.saveRegistration = function (registration) {
+        var _saveRegistration = function (registration) {
 
-           authServiceFactory.logOut();
+            _logOut();
 
-            return $http.post('/api/account/register', registration)
+            return $http.post(serviceBase + 'api/account/register', registration).then(function (response) {
+                return response;
+            });
         };
 
-        authServiceFactory.login = function (loginData) {
+        var _login = function (loginData) {
 
-            var data = "grant_type=password&username=" + loginData.userName + "&password=" + loginData.password;
+            var data = "grant_type=password&username=" +
+                loginData.userName + "&password=" + loginData.password;
 
             var deferred = $q.defer();
 
-            $http.post('/token', data, {
-                header: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            $http.post(serviceBase + 'token', data, {
+                headers:
+                { 'Content-Type': 'application/x-www-form-urlencoded' }
             }).then(function (response) {
-                localStorageService.set('authorizationData', { token: response.data.access_token, userName: response.data.userName });
+
+                localStorageService.set('authorizationData',
+                    { token: response.access_token, userName: loginData.userName });
 
                 _authentication.isAuth = true;
                 _authentication.userName = loginData.userName;
-
+                if (loginData.userName == "nidhi@gmail.com")
+                {
+                    _authentication.isAdmin = true;
+                }
                 deferred.resolve(response);
-                }).then(function (err) {
+
+            }).catch(function (err, status) {
                 _logOut();
                 deferred.reject(err);
             });
@@ -111,33 +125,36 @@
             return deferred.promise;
         };
 
-        authServiceFactory.logOut = function () {
+        var _logOut = function () {
 
             localStorageService.remove('authorizationData');
 
             _authentication.isAuth = false;
             _authentication.userName = "";
+            _authentication.isAdmin = false;
         };
 
-        authServiceFactory.fillAuthData = function () {
+        var _fillAuthData = function () {
+
             var authData = localStorageService.get('authorizationData');
             if (authData) {
                 _authentication.isAuth = true;
+                _authentication.userName = authData.userName;
+                if (authData.userName == "nidhi@gmail.com") {
+                    _authentication.isAdmin = true;
+                }
             }
-            else {
-                _authentication.isAuth = false;
-            }
-        };
+        }
 
-        authServiceFactory.changePassword = function (passwordData) {
-
-            return $http.post('/api/Manage/ChangePassword', passwordData)
-
-        };
+        authServiceFactory.saveRegistration = _saveRegistration;
+        authServiceFactory.login = _login;
+        authServiceFactory.logOut = _logOut;
+        authServiceFactory.fillAuthData = _fillAuthData;
+        authServiceFactory.authentication = _authentication;
 
         return authServiceFactory;
     }]);
 
 
-  
+
 

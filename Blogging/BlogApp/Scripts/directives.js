@@ -6,12 +6,12 @@
             // priority: 1,
             // terminal: true,
             // scope: {}, // {} = isolate, true = child, false/undefined = no change
-            controller : ['$scope', '$http', '$window', 'authService', function($scope, $http, $window, authService) {
-              //  $scope.authenticated = authService.isAuth;
+            controller: ['$scope', '$http', '$window', 'authService', function ($scope, $http, $window, authService) {
+                $scope.authentication = authService.authentication;
 
                 $scope.logOut = function () {
                     authService.logOut();
-                    $scope.authenticated = authService.isAuth;
+                  //  $scope.authenticated = authService.isAuth;
                     $window.location.href = "Index1.html";
 
                 };
